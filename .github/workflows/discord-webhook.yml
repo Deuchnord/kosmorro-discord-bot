@@ -1,0 +1,29 @@
+name: Discord Webhook
+
+on:
+  schedule:
+    # Run every day at 6:30 AM UTC.
+    - cron: "30 6 * * *"
+
+jobs:
+  call-webhook:
+    runs-on: ubuntu-latest
+
+    name: Call webhook
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: "3.x"
+
+    - name: Install dependencies
+      run: |
+        pip install -U kosmorrolib Babel requests
+
+    - name: Run
+      env:
+        DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+      run: |
+        python webhook-call.py
