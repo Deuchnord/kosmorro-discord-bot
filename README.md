@@ -21,6 +21,6 @@ Feel free to change the strings to adapt to your locale :)
 
 For the moment, there is no facilities for this, but something will probably be done in the future.
 
-## Why is this not on the [Kosmorro](/kosmorro) organization?
+## Why is this not on the [Kosmorro](https://github.com/Kosmorro) organization?
 
 Even though I am the creator of Kosmorro, this is mostly an amusement and is not officially part of the project.
