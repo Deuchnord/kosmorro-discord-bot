@@ -1,6 +1,6 @@
 import requests
 
-from kosmorrolib import get_events, Event, EventType, Object, ObjectIdentifier
+from kosmorrolib import get_events, Event, EventType, Object, ObjectIdentifier, SeasonType, LunarEclipseType
 from os import environ
 from babel import dates
 
@@ -20,13 +20,16 @@ def get_object_name(o: Object) -> str:
 
 
 def describe_event(event: Event) -> str:
+    hour = event.start_time.strftime("%H:%M")
     return {
-            EventType.OPPOSITION: lambda e: ":star: **%s :** %s arrive à l'opposition" % (event.start_time.strftime("%H:%M"), get_object_name(e.objects[0])),
-            EventType.CONJUNCTION: lambda e: ":star: **%s :** %s et %s sont en conjonction" % (event.start_time.strftime("%H:%M"), get_object_name(e.objects[0]), get_object_name(e.objects[1])),
-            EventType.OCCULTATION: lambda e: ":star: **%s :** %s occulte %s" % (event.start_time.strftime("%H:%M"), get_object_name(e.objects[0]), get_object_name(e.objects[1])),
-            EventType.MAXIMAL_ELONGATION: lambda e: ":star: **%s :** L'élongation de %s est maximale" % (event.start_time.strftime("%H:%M"), get_object_name(e.objects[0])),
-            EventType.PERIGEE: lambda e: ":star: **%s :** %s arrive à son périgée" % (event.start_time.strftime("%H:%M"), get_object_name(e.objects[0])),
-            EventType.APOGEE: lambda e: ":star: **%s :** %s arrive à son apogée" % (event.start_time.strftime("%H:%M"), get_object_name(e.objects[0])),
+            EventType.OPPOSITION: lambda e: ":star: **%s :** %s arrive à l'opposition" % (hour, get_object_name(e.objects[0])),
+            EventType.CONJUNCTION: lambda e: ":star: **%s :** %s et %s sont en conjonction" % (hour, get_object_name(e.objects[0]), get_object_name(e.objects[1])),
+            EventType.OCCULTATION: lambda e: ":star: **%s :** %s occulte %s" % (hour, get_object_name(e.objects[0]), get_object_name(e.objects[1])),
+            EventType.MAXIMAL_ELONGATION: lambda e: ":star: **%s :** L'élongation de %s est maximale" % (hour, get_object_name(e.objects[0])),
+            EventType.PERIGEE: lambda e: ":star: **%s :** %s arrive à son périgée" % (hour, get_object_name(e.objects[0])),
+            EventType.APOGEE: lambda e: ":star: **%s :** %s arrive à son apogée" % (hour, get_object_name(e.objects[0])),
+            EventType.SEASON_CHANGE: lambda e: ":star: %s a lieu a %s aujourd'hui" % ("L'équinoxe" if event.details['season'] in [SeasonType.MARCH_EQUINOX, SeasonType.SEPTEMBER_EQUINOX] else "Le solstice", hour),
+            EventType.LUNAR_ECLIPSE: lambda e: ":star: **%s:** éclipse %s de Lune (atteignant son maximum à %s)" % (hour, {LunarEclipseType.PARTIAL: "partielle", LunarEclipseType.PENUMBRAL: "pénombrale", LunarEclipseType.TOTAL: "totale"}.get(e.details['type']), e.details['maximum'].strftime("%H:%M"))
     }.get(event.event_type)(event)
 
 
