@@ -21,12 +21,12 @@ def get_object_name(o: Object) -> str:
 
 def describe_event(event: Event) -> str:
     return {
-            EventType.CONJUNCTION: lambda e: ":star: **%s :** %s et %s sont en conjonction" % (event.start_time.strftime("%H:%M"), get_object_name(e.objects[0]), get_object_name(e.objects[1])),
-            EventType.MAXIMAL_ELONGATION: lambda e: ":star: **%s :** L'élongation de %s est maximale" % (event.start_time.strftime("%H:%M"), get_object_name(e.objects[0])),
-            EventType.APOGEE: lambda e: ":star: **%s :** %s arrive à son apogée" % (event.start_time.strftime("%H:%M"), get_object_name(e.objects[0])),
-            EventType.PERIGEE: lambda e: ":star: **%s :** %s arrive à son périgée" % (event.start_time.strftime("%H:%M"), get_object_name(e.objects[0])),
-            EventType.OCCULTATION: lambda e: ":star: **%s :** %s occulte %s" % (event.start_time.strftime("%H:%M"), get_object_name(e.objects[0]), get_object_name(e.objects[1])),
             EventType.OPPOSITION: lambda e: ":star: **%s :** %s arrive à l'opposition" % (event.start_time.strftime("%H:%M"), get_object_name(e.objects[0])),
+            EventType.CONJUNCTION: lambda e: ":star: **%s :** %s et %s sont en conjonction" % (event.start_time.strftime("%H:%M"), get_object_name(e.objects[0]), get_object_name(e.objects[1])),
+            EventType.OCCULTATION: lambda e: ":star: **%s :** %s occulte %s" % (event.start_time.strftime("%H:%M"), get_object_name(e.objects[0]), get_object_name(e.objects[1])),
+            EventType.MAXIMAL_ELONGATION: lambda e: ":star: **%s :** L'élongation de %s est maximale" % (event.start_time.strftime("%H:%M"), get_object_name(e.objects[0])),
+            EventType.PERIGEE: lambda e: ":star: **%s :** %s arrive à son périgée" % (event.start_time.strftime("%H:%M"), get_object_name(e.objects[0])),
+            EventType.APOGEE: lambda e: ":star: **%s :** %s arrive à son apogée" % (event.start_time.strftime("%H:%M"), get_object_name(e.objects[0])),
     }.get(event.event_type)(event)
 
 
