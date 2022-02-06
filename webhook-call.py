@@ -43,7 +43,7 @@ def describe_event(event: Event) -> str:
         % (hour, get_object_name(e.objects[0])),
         EventType.APOGEE: lambda e: ":star: **%s :** %s arrive à son apogée"
         % (hour, get_object_name(e.objects[0])),
-        EventType.SEASON_CHANGE: lambda e: ":star: %s a lieu a %s aujourd'hui"
+        EventType.SEASON_CHANGE: lambda e: ":star: %s a lieu à %s aujourd'hui"
         % (
             "L'équinoxe"
             if event.details["season"]
@@ -51,7 +51,7 @@ def describe_event(event: Event) -> str:
             else "Le solstice",
             hour,
         ),
-        EventType.LUNAR_ECLIPSE: lambda e: ":star: **%s:** éclipse %s de Lune (atteignant son maximum à %s)"
+        EventType.LUNAR_ECLIPSE: lambda e: ":star: **%s :** éclipse %s de Lune (atteignant son maximum à %s)"
         % (
             hour,
             {
