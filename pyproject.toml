@@ -6,7 +6,7 @@ authors = ["Jérôme Deuchnord <jerome@deuchnord.fr>"]
 license = "WTFPL"
 
 [tool.poetry.dependencies]
-python = "^3.10"
+python = "^3.8"
 kosmorrolib = "^1.0"
 Babel = "^2.9.1"
 requests = "^2.27.1"
