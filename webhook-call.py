@@ -11,6 +11,7 @@ from kosmorrolib import (
 )
 from os import environ
 from babel import dates
+from datetime import date
 
 
 def get_object_name(o: Object) -> str:
@@ -110,11 +111,15 @@ for event in get_events():
         best_event = event
         message_content = message(event)
 
+today = date.today()
+
+if (today.day, today.month) == (1, 4):
+    events.append(":star: **13:00 :** maximum de l'essaim de poissons")
+
 
 if len(events) == 0:
     print("No events today, no message to send.")
     exit(0)
-
 
 print("%d events found, calling webhook." % len(events))
 
