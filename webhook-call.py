@@ -34,62 +34,49 @@ def describe_event(event: Event) -> (int, str):
     return {
         EventType.OPPOSITION: (
             5,
-            lambda e: "C'est le moment idéal d'observer %s ! :star_struck:"
-            % get_object_name(e.objects[0]),
-            lambda e: ":star: **%s :** %s arrive à l'opposition"
-            % (hour, get_object_name(e.objects[0])),
+            lambda e: f":star: **{hour} :** {get_object_name(e.objects[0])} arrive à l'opposition",
+            lambda e: f"C'est le moment idéal d'observer {get_object_name(e.objects[0])} ! :star_struck:",
         ),
         EventType.CONJUNCTION: (
             1,
-            lambda e: "Petit rapprochement entre %s et %s aujourd'hui :slight_smile:"
-            % (get_object_name(e.objects[0]), get_object_name(e.objects[1])),
-            lambda e: ":star: **%s :** %s et %s sont en conjonction"
-            % (hour, get_object_name(e.objects[0]), get_object_name(e.objects[1])),
+            lambda e: f":star: **{hour} :** {get_object_name(e.objects[0])} et {get_object_name(e.objects[1])} sont en conjonction",
+            lambda e: f"Petit rapprochement entre {get_object_name(e.objects[0])} et {get_object_name(e.objects[1])} aujourd'hui !",
         ),
         EventType.OCCULTATION: (
             2,
-            lambda e: "Belle occultation de %s par %s à prévoir !"
-            % (get_object_name(e.objects[1]), get_object_name(e.objects[0])),
-            lambda e: ":star: **%s :** %s occulte %s"
-            % (hour, get_object_name(e.objects[0]), get_object_name(e.objects[1])),
+            lambda e: f":star: **{hour} :** {get_object_name(e.objects[0])} occulte {get_object_name(e.objects[1])}",
+            lambda e: f"Belle occultation de {get_object_name(e.objects[1])} par {get_object_name(e.objects[0])} à prévoir !",
         ),
         EventType.MAXIMAL_ELONGATION: (
             3,
-            lambda e: "%s est au plus loin du Soleil ! C'est le moment idéal pour l'observer !"
-            % get_object_name(e.objects[0]),
-            lambda e: ":star: **%s :** L'élongation de %s est maximale"
-            % (hour, get_object_name(e.objects[0])),
+            lambda e: f":star: **{hour} :** L'élongation de {get_object_name(e.objects[0])} est maximale",
+            lambda e: f"{get_object_name(e.objects[0])} est au plus loin du Soleil ! C'est le moment idéal pour l'observer !",
         ),
         EventType.PERIGEE: (
             0,
+            lambda e: f":star: **{hour} :** {get_object_name(e.objects[0])} arrive à son périgée",
             None,
-            lambda e: ":star: **%s :** %s arrive à son périgée"
-            % (hour, get_object_name(e.objects[0])),
         ),
         EventType.APOGEE: (
             0,
+            lambda e: f":star: **{hour} :** {get_object_name(e.objects[0])} arrive à son apogée",
             None,
-            lambda e: ":star: **%s :** %s arrive à son apogée"
-            % (hour, get_object_name(e.objects[0])),
         ),
         EventType.SEASON_CHANGE: (
             0,
-            None,
-            lambda e: ":star: %s a lieu à %s aujourd'hui"
+            lambda e: f":star: %s a lieu à {hour} aujourd'hui"
             % (
                 "L'équinoxe"
                 if event.details["season"]
                 in [SeasonType.MARCH_EQUINOX, SeasonType.SEPTEMBER_EQUINOX]
-                else "Le solstice",
-                hour,
+                else "Le solstice"
             ),
+            None,
         ),
         EventType.LUNAR_ECLIPSE: (
             10,
-            lambda e: "Ne loupez pas l'éclipse de Lune aujourd'hui !",
-            lambda e: ":star: **%s :** éclipse %s de Lune (atteignant son maximum à %s)"
+            lambda e: f":star: **{hour} :** éclipse %s de Lune, atteignant son maximum à %s"
             % (
-                hour,
                 {
                     LunarEclipseType.PARTIAL: "partielle",
                     LunarEclipseType.PENUMBRAL: "pénombrale",
@@ -97,6 +84,7 @@ def describe_event(event: Event) -> (int, str):
                 }.get(e.details["type"]),
                 e.details["maximum"].strftime("%H:%M"),
             ),
+            lambda e: "Ne loupez pas l'éclipse de Lune aujourd'hui !",
         ),
     }.get(event.event_type)
 
@@ -105,16 +93,19 @@ events = []
 best_weight, best_event, message_content = 0, None, None
 
 for event in get_events():
-    weight, message, desc = describe_event(event)
+    weight, desc, message = describe_event(event)
     events.append(desc(event))
     if weight > best_weight:
         best_event = event
         message_content = message(event)
 
+if message_content is None:
+    message_content = "Sortez les télescopes, voici les événements astro du jour !"
+
 today = date.today()
 
 if (today.day, today.month) == (1, 4):
-    events.append(":star: **13:00 :** maximum de l'essaim de poissons")
+    events.append(":star: maximum de l'essaim de poissons")
 
 
 if len(events) == 0:
@@ -130,9 +121,7 @@ WEBHOOK = environ.get("DISCORD_WEBHOOK")
 requests.post(
     url=WEBHOOK,
     json={
-        "content": message_content
-        if message_content is not None
-        else "Sortez les télescopes, voici les événements astro du jour !",
+        "content": message_content,
         "embeds": [
             {
                 "title": dates.format_date(format="full", locale="fr").capitalize(),
