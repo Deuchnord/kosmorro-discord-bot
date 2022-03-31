@@ -120,14 +120,6 @@ for event in get_events():
 
 print()
 
-if highest_weight_number > 1:
-    message_content = message_plur(highest_weight_number)
-else:
-    message_content = message_sing(best_event)
-
-if message_content is None:
-    message_content = "Sortez les télescopes, voici les événements astro du jour !"
-
 today = date.today()
 
 if (today.day, today.month) == (1, 4):
@@ -138,8 +130,15 @@ if len(events) == 0:
     print("No events today, no message to send.")
     exit(0)
 
-print("%d events found, calling webhook." % len(events))
+if highest_weight_number > 1:
+    message_content = message_plur(highest_weight_number)
+else:
+    message_content = message_sing(best_event)
 
+if message_content is None:
+    message_content = "Sortez les télescopes, voici les événements astro du jour !"
+
+print("%d events found, calling webhook." % len(events))
 
 WEBHOOK = environ.get("DISCORD_WEBHOOK")
 
