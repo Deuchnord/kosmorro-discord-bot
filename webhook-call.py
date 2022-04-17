@@ -11,7 +11,7 @@ from kosmorrolib import (
 )
 from os import environ
 from babel import dates
-from datetime import date
+from datetime import date, datetime, timedelta, timezone
 
 
 def get_object_name(o: Object) -> str:
@@ -97,15 +97,47 @@ def describe_event(event: Event) -> (int, str):
     }.get(event.event_type)
 
 
-events = []
+def _get_events() -> [Event]:
+    today = date.today()
+    min_dt, max_dt = get_bound_dt()
+
+    for d in [today, today + timedelta(days=1)]:
+        for event in get_events(d):
+            if min_dt <= event.start_time <= max_dt:
+                yield event
+
+
+def get_bound_dt() -> (datetime, datetime):
+    now = datetime.now()
+    min_dt = datetime(now.year, now.month, now.day, now.hour + 1, tzinfo=timezone.utc)
+    max_dt = datetime(now.year, now.month, now.day + 1, now.hour + 1, tzinfo=timezone.utc)
+
+    return min_dt, max_dt
+
+
+events_txt = []
+nb_events = 0
 best_weight, best_event, message_content = 0, None, None
 message_sing, message_plur = None, None
 highest_weight_number = 1
+today = date.today()
+next_night = False
 
-for event in get_events():
+for event in _get_events():
+    nb_events += 1
+
+    if not next_night and today.day != event.start_time.day:
+        next_night = True
+        print("Tomorrow's events:")
+        if nb_events > 1:
+            events_txt.append("")
+            events_txt.append("**Et la nuit prochaine :**")
+        else:
+            events_txt.append("**La nuit prochaine :**")
+
     weight, desc, message_sing, message_plur = describe_event(event)
-    events.append(desc(event))
-    print(f"Found {event.event_type}")
+    events_txt.append(desc(event))
+    print(f"Found {event.event_type} at {event.start_time}")
 
     if weight > best_weight:
         print(
@@ -120,14 +152,12 @@ for event in get_events():
 
 print()
 
-today = date.today()
-
 if (today.day, today.month) == (1, 4):
-    events.append(":star: maximum de l'essaim de poissons")
+    events_txt.append(":star: maximum de l'essaim de poissons")
 
 
-if len(events) == 0:
-    print("No events today, no message to send.")
+if len(events_txt) == 0:
+    print("No events found, no message to send.")
     exit(0)
 
 if highest_weight_number > 1:
@@ -138,9 +168,13 @@ else:
 if message_content is None:
     message_content = "Sortez les télescopes, voici les événements astro du jour !"
 
-print("%d events found, calling webhook." % len(events))
+print(f"{nb_events} event{'s' if nb_events > 1 else ''} found, calling webhook.")
 
 WEBHOOK = environ.get("DISCORD_WEBHOOK")
+
+if WEBHOOK is None:
+    print("Webhook not provided, please define the `DISCORD_WEBHOOK` environment variable!")
+    exit(1)
 
 requests.post(
     url=WEBHOOK,
@@ -153,7 +187,7 @@ requests.post(
                     "text": "Propulsé par Kosmorrolib - les horaires sont données en UTC.",
                     "icon_url": "https://raw.githubusercontent.com/Kosmorro/logos/main/png/kosmorro-icon.png",
                 },
-                "description": "\n".join(events),
+                "description": "\n".join(events_txt),
             }
         ],
     },
