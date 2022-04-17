@@ -152,10 +152,6 @@ for event in _get_events():
 
 print()
 
-if (today.day, today.month) == (1, 4):
-    events_txt.append(":star: maximum de l'essaim de poissons")
-
-
 if len(events_txt) == 0:
     print("No events found, no message to send.")
     exit(0)
