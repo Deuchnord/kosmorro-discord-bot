@@ -8,7 +8,7 @@ license = "WTFPL"
 [tool.poetry.dependencies]
 python = ">=3.8,<3.11"
 kosmorrolib = "^1.0"
-Babel = "^2.9.1"
+Babel = "^2.10.1"
 requests = "^2.27.1"
 
 [tool.poetry.dev-dependencies]
