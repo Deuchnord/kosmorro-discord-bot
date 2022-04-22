@@ -117,7 +117,7 @@ def get_bound_dt() -> (datetime, datetime):
 
 events_txt = []
 nb_events = 0
-best_weight, best_event, message_content = 0, None, None
+best_weight, best_event, message_content = -1, None, None
 message_sing, message_plur = None, None
 highest_weight_number = 1
 today = date.today()
