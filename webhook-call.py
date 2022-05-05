@@ -156,13 +156,14 @@ if len(events_txt) == 0:
     print("No events found, no message to send.")
     exit(0)
 
-if highest_weight_number > 1:
+
+if message_sing is None or message_plur is None:
+    print("No custom message to display, using the default message instead.")
+    message_content = "Sortez les télescopes, voici les événements astro du jour !"  
+elif highest_weight_number > 1:
     message_content = message_plur(highest_weight_number)
 else:
     message_content = message_sing(best_event)
-
-if message_content is None:
-    message_content = "Sortez les télescopes, voici les événements astro du jour !"
 
 print(f"{nb_events} event{'s' if nb_events > 1 else ''} found, calling webhook.")
 
