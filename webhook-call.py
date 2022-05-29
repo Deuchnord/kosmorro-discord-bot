@@ -42,7 +42,7 @@ def describe_event(event: Event) -> (int, str):
             1,
             lambda e: f":star: **{hour} :** {get_object_name(e.objects[0])} et {get_object_name(e.objects[1])} sont en conjonction",
             lambda e: f"Petit rapprochement entre {get_object_name(e.objects[0])} et {get_object_name(e.objects[1])} aujourd'hui !",
-            lambda n: f"Nous avons {n} planètes qui se rencontrent aujourd'hui !",
+            lambda n: f"Nous avons {n} rencontres planétaires aujourd'hui !",
         ),
         EventType.OCCULTATION: (
             2,
