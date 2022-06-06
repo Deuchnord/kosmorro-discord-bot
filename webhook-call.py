@@ -109,8 +109,8 @@ def _get_events() -> [Event]:
 
 def get_bound_dt() -> (datetime, datetime):
     now = datetime.now()
-    min_dt = datetime(now.year, now.month, now.day, now.hour + 1, tzinfo=timezone.utc)
-    max_dt = datetime(now.year, now.month, now.day + 1, now.hour + 1, tzinfo=timezone.utc)
+    min_dt = datetime(now.year, now.month, now.day, now.hour, tzinfo=timezone.utc) + timedelta(hours=1)
+    max_dt = min_dt + timedelta(days=1)
 
     return min_dt, max_dt
 
