@@ -109,7 +109,9 @@ def _get_events() -> [Event]:
 
 def get_bound_dt() -> (datetime, datetime):
     now = datetime.now()
-    min_dt = datetime(now.year, now.month, now.day, now.hour, tzinfo=timezone.utc) + timedelta(hours=1)
+    min_dt = datetime(
+        now.year, now.month, now.day, now.hour, tzinfo=timezone.utc
+    ) + timedelta(hours=1)
     max_dt = min_dt + timedelta(days=1)
 
     return min_dt, max_dt
@@ -159,7 +161,7 @@ if len(events_txt) == 0:
 
 if message_sing is None or message_plur is None:
     print("No custom message to display, using the default message instead.")
-    message_content = "Sortez les télescopes, voici les événements astro du jour !"  
+    message_content = "Sortez les télescopes, voici les événements astro du jour !"
 elif highest_weight_number > 1:
     message_content = message_plur(highest_weight_number)
 else:
@@ -170,7 +172,9 @@ print(f"{nb_events} event{'s' if nb_events > 1 else ''} found, calling webhook."
 WEBHOOK = environ.get("DISCORD_WEBHOOK")
 
 if WEBHOOK is None:
-    print("Webhook not provided, please define the `DISCORD_WEBHOOK` environment variable!")
+    print(
+        "Webhook not provided, please define the `DISCORD_WEBHOOK` environment variable!"
+    )
     exit(1)
 
 requests.post(
