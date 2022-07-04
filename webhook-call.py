@@ -19,6 +19,7 @@ def get_object_name(o: Object) -> str:
         ObjectIdentifier.SUN: "le Soleil",
         ObjectIdentifier.MERCURY: "Mercure",
         ObjectIdentifier.VENUS: "Vénus",
+        ObjectIdentifier.EARTH: "la Terre",
         ObjectIdentifier.MOON: "la Lune",
         ObjectIdentifier.MARS: "Mars",
         ObjectIdentifier.JUPITER: "Jupiter",
