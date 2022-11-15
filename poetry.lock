@@ -90,11 +90,11 @@ numpy = "*"
 
 [[package]]
 name = "kosmorrolib"
-version = "1.0.6"
+version = "1.0.7"
 description = "A library to computes the ephemerides."
 category = "main"
 optional = false
-python-versions = ">=3.7,<3.11"
+python-versions = ">=3.8,<3.12"
 
 [package.dependencies]
 python-dateutil = ">=2.8,<3.0"
@@ -303,8 +303,8 @@ jplephem = [
     {file = "jplephem-2.17.tar.gz", hash = "sha256:e1c6e5565c4d00485f1063241b4d1eff044585c22b8e97fad0ff2f6efb8aaa27"},
 ]
 kosmorrolib = [
-    {file = "kosmorrolib-1.0.6-py3-none-any.whl", hash = "sha256:9ffbbaa8666c1222bf8a25d543afa72a0a80249017d342a6667bcae8657effc0"},
-    {file = "kosmorrolib-1.0.6.tar.gz", hash = "sha256:8c77f40b346d183147cb3e927b3ea5c7d4d7067ce7e49edb73821566f74d5e51"},
+    {file = "kosmorrolib-1.0.7-py3-none-any.whl", hash = "sha256:fa99a4e268ee0134042d498c695ebdd6503d2a03c5697ff7863d2ce45e233279"},
+    {file = "kosmorrolib-1.0.7.tar.gz", hash = "sha256:f8c6ad59c53abd08da3a5f4436564cb89e36d706e0d488fcf9288f2069eb01c6"},
 ]
 mypy-extensions = [
     {file = "mypy_extensions-0.4.3-py2.py3-none-any.whl", hash = "sha256:090fedd75945a69ae91ce1303b5824f428daf5a028d2f6ab8a299250a846f15d"},
