@@ -9,7 +9,7 @@ license = "WTFPL"
 python = ">=3.8,<3.11"
 kosmorrolib = "^1.0"
 Babel = "^2.16.0"
-requests = "^2.31.0"
+requests = "^2.32.4"
 
 [tool.poetry.dev-dependencies]
 black = "^24.3.0"
